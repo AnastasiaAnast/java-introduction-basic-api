@@ -314,7 +314,7 @@ boolean Boolean
 ## Область видимости переменных
 
 У переменных существует понятие «область видимости».
-Если переменную объявили внутри некоторого блока фигурных скобок { }, то снаружи этого блока переменная будет недоступна.
+Если переменную объявили внутри некоторого блока фигурных скобок { }, то снаружи этого блока переменная будет недоступна. А все переменные, объявленные снаружи скобок - доступны внутри скобок.
 
       public class Program {
          public static void main(String[] args) {
@@ -328,45 +328,222 @@ boolean Boolean
 
 ## Функции и методы — это технически одно и то же. Функции могут не принадлежать классам, а методы принадлежат.
 
+ТАЙМЛАЙН ~1:20:00
+
 В java все функции являются методами.
-Описание
-Вызов
-Возвращаемое значение
-Рекурсия
 
-Управляющие конструкции – условный и тернарный операторы
-Оператор выбора
-Циклы
-Цикл — это многократное выполнение одинаковой
-последовательности действий.
-В java доступны следующие циклы:
-● цикл while;
-● цикл do while;
-● цикл for; и его модификация for in
+у них есть:
 
-Циклы
-continue, break
-Операторы для управления циклами — continue и break.
-Выполнение следующей итерации цикла — continue.
-Прерывание текущей итерации цикла — break.
+- Описание
+- Вызов
+- Возвращаемое значение
+- Рекурсия
 
-- ближайшего к оператору
+Чтобы описать ф-ю обязательно должен быть класс, без класса ничего работать не будет. +пока что обязательно использовать слово static
 
-Оператор цикла for
-Вложенные циклы
-for: Работает только для коллекций
+аргументы: определяется тип данных, идентификатор переменной, через запятую их может быть мн-во; если требуются проверки - делаем, если не требуются - не делаем; если рекурсия - помним: любая рекурсия начинается с условия, которое определяет выход из этой рекурсии
 
-Работа с файлами
+## Управляющие конструкции: условный (if, if-else) и тернарный операторы
+
+      public class Program {
+         public static void main(String[] args) {
+            int a = 1;
+            int b = 2;
+            int c;
+            if (a > b) {
+               c = a;
+            } else {
+               c = b;
+            }
+            System.out.println(c);
+         }
+      }
+
+ЗАПИСИ РАВНОЗНАЧНЫ
+
+      public class Program {
+         public static void main(String[] args) {
+            int a = 1;
+            int b = 2;
+            int c = 0;
+            if (a > b) c = a; // иначе с <...>, замена else
+            if (b > a) c = b; // иначе с <...>, замена else
+
+
+            System.out.println(c);
+         }
+      }
+
+## Тернарный оператор
+
+      public class Program {
+         public static void main(String[] args) {
+            int a = 1;
+            int b = 2;
+            int min = a < b ? a : b; //тернарный оператор: если выполнено условие a < b, то выполняется часть после "?" и до ":", если нет - то вернется значение после ":" (b)
+            System.out.println(min);
+         }
+      }
+
+## Оператор выбора - switch
+
+После switch указываем в круглых скобках переменную, которую будем проверять на соответствующие кейсы (case) - если значение проверяемой переменной равно значению case - делается определенное действие. ОБЯЗАТЕЛЬНО каждый case должен заканчиваться break.
+Есть необязательный блок default, который тоже будет что-то выполнять, также должен заканчиваться break.
+
+      import java.util.Scanner;
+      public class Program {
+         public static void main(String[] args) {
+            int mounth = value;
+            String text = "";
+            switch (mounth) {
+               case 1:
+                  text = "Autumn";
+                  break;
+               ...
+               default:
+                  text = "mistake";
+                  break;
+            }
+            System.out.println(text);
+            iScanner.close();
+         }
+      }
+
+## Циклы: while, do while, for и его модификация for in - для перебора коллекций/итерируемых типов (паттерн - итератор)
+
+Цикл — это многократное выполнение одинаковой последовательности действий.
+
+### цикл while
+
+      public class Program {
+         public static void main(String[] args) {
+            int value = 321;
+            int count = 0;
+
+            while (value != 0) {
+               value /= 10; // делить, присвоить
+               count++; // увеличить на 1
+            }
+            System.out.println(count);
+         }
+      }
+
+### цикл do while
+
+      public class Program {
+         public static void main(String[] args) {
+            int value = 321;
+            int count = 0;
+
+            do {
+               value /= 10;
+               count++;
+            } while (value != 0);
+            System.out.println(count);
+         }
+      }
+
+### операторы управления циклами - где можно обойтись - лучше обходиться без них:
+
+**continue** (выполнение следующей итерации цикла), <br>
+**break** (прерывание текущей итерации цикла)
+
+Использование операторов continue и break - неявная отсылка к оператору безусловного перехода - go to - быдло-кодинг - его использование - увольнение. Поэтому где можно обойтись - лучше обходиться без них.
+
+Оператор цикла **for**
+
+      public class Program {
+         public static void main(String[] args) {
+
+            int s = 0;
+            for (int i = 1; i <= 10; i++) {
+               s += i;
+            }
+            System.out.println(s);
+         }
+      }
+
+### Вложенные циклы (справедливы для while, do while, for, их можно комбинировать, цикла внутри цикла внутри цикла, тройные, четверные, технически - любой). Любая вложенность(глубина) - намек на использование рекурсий
+
+      public class Program {
+         public static void main(String[] args) {
+            for (int i = 0; i < 5; i++) {
+               for (int j = 0; j < 5; j++) {
+                  System.out.print("* ");
+               }
+               System.out.println();
+            }
+            // * * * * *
+            // * * * * *
+            // * * * * *
+            // * * * * *
+            // * * * * *
+         }
+      }
+
+## for: Работает только для коллекций
+
+      public class Program {
+         public static void main(String[] args) {
+
+            int arr[] = new int[10];
+            for (int item : arr) {
+               System.out.printf("%d ", item);
+            }
+            System.out.println();
+         }
+      }
+
+## Работа с файлами
+
 Создание и запись\ дозапись
+
+      import java.io.FileWriter;
+      import java.io.IOException;
+      public class Program {
+         public static void main(String[] args) {
+               try (FileWriter fw = new FileWriter("file.txt", false)) {
+               fw.write("line 1");
+               fw.append('\n');
+               fw.append('2');
+               fw.append('\n');
+               fw.write("line 3");
+               fw.flush();
+            } catch (IOException ex) {
+               System.out.println(ex.getMessage());
+            }
+         }
+      }
+
 Чтение, Вариант посимвольно
+
+      import java.io.\*;
+      public class Program {
+         public static void main(String[] args) throws Exception {
+            FileReader fr = new FileReader("file.txt");
+            int c;
+            while ((c = fr.read()) != -1) {
+               char ch = (char) c;
+               if (ch == '\n') {
+                  System.out.print(ch);
+               } else {
+               System.out.print(ch);
+               }
+            }
+         }
+      }
+
 Вариант построчно
 
-Задачи для демонстрации
-Задачи для самоконтроля
+      import java.io.*;
 
-1. Задана натуральная степень k. Сформировать случайным образом список коэффициентов (значения от 0 до 100) многочлена многочлен степени k.
-   *Пример: k=2 => 2*x² + 4*x + 5 = 0 или x² + 5 = 0 или 10*x² = 0
-2. Даны два файла, в каждом из которых находится запись
-   многочлена. Сформировать файл содержащий сумму многочленов
-
-Итоги База еще одного языка
+      public class Program {
+         public static void main(String[] args) throws Exception {
+            BufferedReader br = new BufferedReader(new FileReader("file.txt"));
+            String str;
+            while ((str = br.readLine()) != null) {
+               System.out.printf("== %s ==\n", str);
+            }
+            br.close();
+         }
+      }
